@@ -169,12 +169,12 @@ function stop_running_servers {
 # Run all tasks
 function run {
   is_right_user;
-  #stop_running_servers;
-  #run_prepare_env;
-  #run_get_release;
-  #run_prepare_server;
-  #run_start_server;
-  #set_init_script
+  stop_running_servers;
+  run_prepare_env;
+  run_get_release;
+  run_prepare_server;
+  run_start_server;
+  set_init_script
 }
 
 run;

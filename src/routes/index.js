@@ -19,6 +19,7 @@ export default {
     require('./home').default,
     require('./systems').default,
     require('./system').default,
+    require('./game').default,
     require('./stats-board').default,
     require('./notFound').default,
   ],

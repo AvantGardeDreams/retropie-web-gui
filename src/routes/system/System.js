@@ -4,6 +4,7 @@ import Layout from '../../components/Layout';
 import Upload from '../../components/Upload';
 import Image from '../../components/Image';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
+import Link from '../../components/Link/Link';
 
 import {
   Grid,
@@ -55,6 +56,9 @@ const mapDispatchToProps = (dispatch) => {
         dispatch(actions.deleteFile(system, file))
           .then(() => dispatch(actions.list(system)));
       }
+    },
+    downloadFile: (system, file) => {
+        dispatch(actions.downloadFile(system, file));
     },
     checkInvalidFiles: (fileList, systemExtensions) => {
       return dispatch(checkActions.checkInvalidFiles(fileList, systemExtensions));
@@ -126,18 +130,26 @@ class Systems extends Component {
       list.push(<tr key={`system-file-empty`}><td colSpan="3">Empty directory</td></tr>)
     } else {
       fileList.filter(this.filterByName).map(file => {
-        const tooltip = (
+        const delTooltip = (
           <Tooltip id="tooltip">Delete this file</Tooltip>
+        );
+        const dwnTooltip = (
+          <Tooltip id="tooltip">Download this file</Tooltip>
         );
 
         list.push(
           <tr key={`system-file-${file}`} className={this.props.invalidFiles.indexOf(file) > -1 ? s.invalidFile : ''}>
             <td />
-            <td>{file}</td>
+            <td><Link to={`/system/${this.state.system.name}/${file}`}>{file}</Link></td>
             <td>
-              <OverlayTrigger placement="left" overlay={tooltip}>
+              <OverlayTrigger placement="left" overlay={delTooltip}>
                 <Button bsStyle="danger" bsSize="xs" onClick={this.props.deleteFile.bind(this, this.state.system.name, file)}>
                   <i className="fa fa-close" />
+                </Button>
+              </OverlayTrigger>
+              <OverlayTrigger placement="left" overlay={dwnTooltip}>
+                <Button bsStyle="success" bsSize="xs" onClick={this.props.downloadFile.bind(this, this.state.system.name, file)}>
+                  <i className="fa fa-download" />
                 </Button>
               </OverlayTrigger>
             </td>

@@ -8,7 +8,12 @@ export function findSystemById(id) {
   return found ? found[0] : null;
 }
 
+export function findGameBySystem(system, game) {
+  return { title : 'Zoop' };
+}
+
 export default {
   systems,
-  findSystemById
+  findSystemById,
+  findGameBySystem
 }

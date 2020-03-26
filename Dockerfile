@@ -14,28 +14,25 @@ RUN apt-get install -y build-essential
 RUN npm install -g yarn
 RUN npm install pm2 -g --no-optional
 
-RUN mkdir app/
-RUN mkdir app/src/
-RUN mkdir app/test/
-RUN mkdir app/tools/
-RUN mkdir app/logs/
+RUN mkdir roman/ roman/roms/ roman/images/
+RUN mkdir app/ app/src/ app/test/ app/tools/ app/logs/
+
+ADD package.json /tmp/package.json
+RUN cd /tmp && npm install
+RUN cp -a /tmp/node_modules /app/
 
 COPY LICENSE package.json ReactStarterKit.LICENSE.txt yarn.lock app/
-COPY src   app/src/
 COPY test  app/test/
 COPY tools app/tools/ 
+COPY src   app/src/
 
-WORKDIR app 
-RUN npm install 
+WORKDIR /app 
 RUN cd tools
 RUN npm run build -- --release --verbose 
 RUN chown -R roman:roman /app/logs
+RUN chown -R roman:roman /roman
 
 USER roman
-
-RUN pwd
-RUN ls
-RUN ls build
 
 WORKDIR build
 ENV WEBSITE_HOSTNAME='0.0.0.0'

@@ -29,7 +29,9 @@ export default function (app, env, io) {
         }
 
         if (available) {
-          fileList = fs.readdirSync(path);
+          fileList = fs.readdirSync(path, {withFileTypes: true})
+                       .filter(dirent => dirent.isDirectory())
+                       .map(dirent => dirent.name);
         }
       } catch (e) {
         error = e.message;
